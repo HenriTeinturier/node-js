@@ -1,15 +1,18 @@
-function greet(name) {
-  console.log(`Hello ${name}`);
-}
+const EventEmitter = require("events");
 
-function higherOrderFunction(callback) {
-  callback("Henri");
-}
+const emitter = new EventEmitter();
 
-higherOrderFunction(greet);
+emitter.on("order-pizza", ({ size, toppings }) => {
+  console.log(`Pizza is ordered! Baking a ${size} pizza with ${toppings}`);
+});
 
-let numbers = [1, 2, 3, 4, 5];
+emitter.on("order-pizza", ({ size }) => {
+  if (size === "large") {
+    console.log("Serving complimentary drink");
+  }
+});
 
-numbers.sort((a, b) => a - b);
-numbers.filter((number) => number % 2 === 0);
-numbers.map((number) => number * 2);
+emitter.emit("order-pizza", {
+  size: "large",
+  toppings: "pepperoni, mushroom",
+});
